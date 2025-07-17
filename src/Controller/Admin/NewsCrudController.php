@@ -20,7 +20,8 @@ class NewsCrudController extends BaseCrudController
         return News::class;
     }
 
-    
+
+
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -34,7 +35,7 @@ class NewsCrudController extends BaseCrudController
     {
         return $crud
             ->overrideTemplates([
-                'crud/detail' => '@RssBundle/news/detail.html.twig',
+                'crud/detail' => '@ProlyfixRss/news/detail.html.twig',
             ]);
     }
 }

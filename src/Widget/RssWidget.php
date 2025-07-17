@@ -29,7 +29,7 @@ class RssWidget implements WidgetInterface
 
     public function getTemplate(): string
     {
-        return '@RssBundle/widget/rss_widget.html.twig';
+        return '@ProlyfixRss/widget/rss_widget.html.twig';
     }
 
     public function getHeight(): int
@@ -61,7 +61,7 @@ class RssWidget implements WidgetInterface
     public function render(): string
     {
         $feedEntries = $this->em->getRepository(RssFeedEntry::class)->findBy([], ['publishedAt' => 'DESC'], 5);
-        return 	$this->twig->render('@RssBundle/widget/rss_widget.html.twig',[
+        return 	$this->twig->render('@ProlyfixRss/widget/rss_widget.html.twig',[
             'title' => 'RssWidget',
             'content' => 'RssWidget content',
             'feedEntries' => $feedEntries,
