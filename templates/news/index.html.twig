@@ -1,0 +1,31 @@
+{% extends '@EasyAdmin/crud/index.html.twig' %}
+{% block main %}
+	<div class="row">
+		{% for entity in entities %}
+			<div class="col-md-4">
+				<div class="card">
+					<div class="card-body">
+						{% include 'common/_cardActions.html.twig' with {
+                    'actions': [
+                        {'action': ea_url()
+                            .setController('Prolyfix\\RssBundle\\Controller\\Admin\\NewsCrudController')
+                            .setAction('edit')
+                            .setEntityId(entity.instance.id), 'label': 'Edit', 'icon': 'mdi mdi-pencil', 'type': 'link'},
+                        {'action': ea_url()
+                            .setController('Prolyfix\\RssBundle\\Controller\\Admin\\NewsCrudController')
+                            .setAction('show')
+                            .setEntityId(entity.instance.id), 'label': 'View', 'icon': 'mdi mdi-eye', 'type': 'link'}
+                    ]
+                } %}
+						<div class="text-center">
+							<h4 class="mb-1 font-20">{{ entity.instance.title }}</h4>
+						</div>
+						<p class="font-14 text-center text-muted">
+							{{ entity.instance.content | striptags | slice(0, 100) }}
+						</p>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

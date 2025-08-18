@@ -36,6 +36,7 @@ class NewsCrudController extends BaseCrudController
         return $crud
             ->overrideTemplates([
                 'crud/detail' => '@ProlyfixRss/news/detail.html.twig',
+                'crud/index' => '@ProlyfixRss/news/index.html.twig',
             ]);
     }
 }
