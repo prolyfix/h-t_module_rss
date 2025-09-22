@@ -31,7 +31,6 @@ class WeeklyReportListener
         } else {
             return;
         }
-
         $event->setData($moduleUserTabs);
     }
 }

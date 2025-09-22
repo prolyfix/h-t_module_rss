@@ -24,6 +24,10 @@
 							{{ entity.instance.content | striptags | slice(0, 100) }}
 						</p>
 					</div>
+                    <div class="card-footer text-center">
+					{% include 'common/avatar.html.twig' with {'user': entity.instance.createdBy} %}
+                        <small class="text-muted">{{ entity.instance.creationDate|date('Y-m-d') }}</small>
+                    </div>
 				</div>
 			</div>
 		{% endfor %}
