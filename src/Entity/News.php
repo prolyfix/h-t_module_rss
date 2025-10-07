@@ -40,6 +40,9 @@ class News extends TimeData
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $theuid = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?array $readBy = null;
+
      /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
@@ -118,6 +121,18 @@ class News extends TimeData
     public function setTags(?array $tags): static
     {
         $this->tags = $tags;
+
+        return $this;
+    }
+
+    public function getReadBy(): ?array
+    {
+        return $this->readBy;
+    }
+
+    public function setReadBy(?array $readBy): static
+    {
+        $this->readBy = $readBy;
 
         return $this;
     }

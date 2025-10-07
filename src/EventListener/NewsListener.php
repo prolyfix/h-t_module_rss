@@ -29,7 +29,7 @@ final class NewsListener
         $feedEntry->setPublishedAt(new \DateTime());
         $feedEntry->setLink('/admin?crudAction=detail&crudControllerFqcn=Prolyfix%5CRssBundle%5CController%5CAdmin%5CNewsCrudController&entityId=' . $news->getId());
         $feedEntry->setRssFeedList($feedList);
-
+        $feedEntry->setCreatedBy($news->getCreatedBy());
         $feedList->addRssFeedEntry($feedEntry);
         $this->entityManager->persist($feedEntry);
         $this->entityManager->persist($feedList);

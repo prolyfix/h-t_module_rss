@@ -1,8 +1,16 @@
 {% extends 'widget/_skeleton.html.twig' %}
 {% block content %}
-    <ul>
+  {% set userId = app.user.id %}
+  <ul>
     {% for entry in feedEntries %}
-        <li><a href="{{entry.link}}"> {{ entry.title }} | {{entry.rssFeedList.name }} </a></li>
+      <li>
+        <a href="{{ entry.link }}" {% if userId not  in entry.readByIds %} class="bg-success-subtle text-success border-success"{% endif %} style="color:inherit">{{ entry.title }} | {{ entry.rssFeedList.name }}
+        </a>
+        {% if entry.createdBy is not null %}
+          | <b>{{ entry.createdBy.name }}</b>
+        {% endif %}
+      </li>
     {% endfor %}
-    </ul>
+  </ul>
+  <a href="{{ path('admin', { crudAction: 'index', crudControllerFqcn: 'Prolyfix\\RssBundle\\Controller\\Admin\\NewsCrudController' }) }}" class="btn btn-primary">{{ 'Alle'|trans }}</a>
 {% endblock %}

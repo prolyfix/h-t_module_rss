@@ -5,6 +5,7 @@ use App\Widget\WidgetInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Prolyfix\RssBundle\Entity\RssFeedEntry;
+use Prolyfix\RssBundle\Entity\RssFeedList;
 use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Environment as Twig;
 
@@ -60,7 +61,8 @@ class RssWidget implements WidgetInterface
 
     public function render(): string
     {
-        $feedEntries = $this->em->getRepository(RssFeedEntry::class)->findBy([], ['publishedAt' => 'DESC'], 5);
+	    $feedList = $this->em->getRepository(RssFeedList::class)->findOneBy(['name'=>'internal']);
+        $feedEntries = $this->em->getRepository(RssFeedEntry::class)->findBy(['rssFeedList'=>$feedList], ['publishedAt' => 'DESC'], 11);
         return 	$this->twig->render('@ProlyfixRss/widget/rss_widget.html.twig',[
             'title' => 'RssWidget',
             'content' => 'RssWidget content',

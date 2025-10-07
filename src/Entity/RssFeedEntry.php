@@ -2,6 +2,7 @@
 
 namespace Prolyfix\RssBundle\Entity;
 
+use App\Entity\User;
 use Prolyfix\RssBundle\Repository\RssFeedEntryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,6 +39,12 @@ class RssFeedEntry
 
     #[ORM\Column(length: 511, nullable: true)]
     private ?string $uniqId = null;
+
+    #[ORM\ManyToOne]
+    private ?User $createdBy = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $readByIds = null;
 
     public function getId(): ?int
     {
@@ -136,6 +143,29 @@ class RssFeedEntry
     public function setUniqId(?string $uniqId): static
     {
         $this->uniqId = $uniqId;
+
+        return $this;
+    }
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): static
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getReadByIds(): ?array
+    {
+        return $this->readByIds;
+    }
+
+    public function setReadByIds(?array $readByIds): static
+    {
+        $this->readByIds = $readByIds;
 
         return $this;
     }

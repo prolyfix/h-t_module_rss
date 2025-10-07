@@ -21,7 +21,10 @@ class WeeklyReportListener
         $userId = $user->getId();
         $internalFeed = $this->em->getRepository(RssFeedList::class)->findOneBy(['tenant' => $user->getTenant(), 'name' => 'internal']);
         if ($internalFeed) {
-            $feedEntries = $this->em->getRepository(RssFeedEntry::class)->findBy(['rssFeedList' => $internalFeed]);
+            $today = new \DateTime();
+            $lastMonday = (clone $today)->modify('last monday')->setTime(0, 0, 0);
+            $lastSunday = (clone $lastMonday)->modify('next sunday')->setTime(23, 59, 59);
+            $feedEntries = $this->em->getRepository(RssFeedEntry::class)->findLastWeekEntries($internalFeed);
             $moduleUserTabs['feedEntries']['values'] = $feedEntries;
             $moduleUserTabs['feedEntries']['structure'] = [
                 'publishedAt' => 'date',
