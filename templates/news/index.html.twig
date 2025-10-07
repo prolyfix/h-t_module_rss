@@ -1,5 +1,5 @@
 {% extends '@EasyAdmin/crud/index.html.twig' %}
-{% block main %}
+{% block table %}
 	<div class="row">
 		{% for entity in entities %}
 			<div class="col-md-4">
@@ -13,7 +13,7 @@
                             .setEntityId(entity.instance.id), 'label': 'Edit', 'icon': 'mdi mdi-pencil', 'type': 'link'},
                         {'action': ea_url()
                             .setController('Prolyfix\\RssBundle\\Controller\\Admin\\NewsCrudController')
-                            .setAction('show')
+                            .setAction('detail')
                             .setEntityId(entity.instance.id), 'label': 'View', 'icon': 'mdi mdi-eye', 'type': 'link'}
                     ]
                 } %}

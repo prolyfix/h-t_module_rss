@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\VarDumper\Test;
 
+use PHPUnit\Framework\Attributes\After;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
@@ -39,6 +40,7 @@ trait VarDumperTestTrait
     /**
      * @after
      */
+    #[After]
     protected function tearDownVarDumper(): void
     {
         $this->varDumperConfig['casters'] = [];

@@ -62,6 +62,7 @@ class Request
     public const METHOD_OPTIONS = 'OPTIONS';
     public const METHOD_TRACE = 'TRACE';
     public const METHOD_CONNECT = 'CONNECT';
+    public const METHOD_QUERY = 'QUERY';
 
     /**
      * @var string[]
@@ -94,6 +95,8 @@ class Request
 
     /**
      * Query string parameters ($_GET).
+     *
+     * @var InputBag<string>
      */
     public InputBag $query;
 
@@ -109,6 +112,8 @@ class Request
 
     /**
      * Cookies ($_COOKIE).
+     *
+     * @var InputBag<string>
      */
     public InputBag $cookies;
 
@@ -194,6 +199,28 @@ class Request
         self::HEADER_X_FORWARDED_PREFIX => 'X_FORWARDED_PREFIX',
     ];
 
+    /**
+     * This mapping is used when no exact MIME match is found in $formats.
+     *
+     * It enables mappings like application/soap+xml -> xml.
+     *
+     * @see https://datatracker.ietf.org/doc/html/rfc6839
+     * @see https://datatracker.ietf.org/doc/html/rfc7303
+     * @see https://www.iana.org/assignments/media-types/media-types.xhtml
+     */
+    private const STRUCTURED_SUFFIX_FORMATS = [
+        'json' => 'json',
+        'xml' => 'xml',
+        'xhtml' => 'html',
+        'cbor' => 'cbor',
+        'zip' => 'zip',
+        'ber' => 'asn1',
+        'der' => 'asn1',
+        'tlv' => 'tlv',
+        'wbxml' => 'xml',
+        'yaml' => 'yaml',
+    ];
+
     private bool $isIisRewrite = false;
 
     /**
@@ -254,7 +281,7 @@ class Request
         $request = self::createRequestFromFactory($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
 
         if (str_starts_with($request->headers->get('CONTENT_TYPE', ''), 'application/x-www-form-urlencoded')
-            && \in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'DELETE', 'PATCH'], true)
+            && \in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'DELETE', 'PATCH', 'QUERY'], true)
         ) {
             parse_str($request->getContent(), $data);
             $request->request = new InputBag($data);
@@ -350,6 +377,7 @@ class Request
             case 'POST':
             case 'PUT':
             case 'DELETE':
+            case 'QUERY':
                 if (!isset($server['CONTENT_TYPE'])) {
                     $server['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
                 }
@@ -1064,7 +1092,7 @@ class Request
 
         $https = $this->server->get('HTTPS');
 
-        return $https && 'off' !== strtolower($https);
+        return $https && (!\is_string($https) || 'off' !== strtolower($https));
     }
 
     /**
@@ -1175,7 +1203,7 @@ class Request
 
         $method = strtoupper($method);
 
-        if (\in_array($method, ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'PATCH', 'PURGE', 'TRACE'], true)) {
+        if (\in_array($method, ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'PATCH', 'PURGE', 'TRACE', 'QUERY'], true)) {
             return $this->method = $method;
         }
 
@@ -1224,9 +1252,22 @@ class Request
 
     /**
      * Gets the format associated with the mime type.
+     *
+     *  Resolution order:
+     *   1) Exact match on the full MIME type (e.g. "application/json").
+     *   2) Match on the canonical MIME type (i.e. before the first ";" parameter).
+     *   3) If the type is "application/*+suffix", use the structured syntax suffix
+     *      mapping (e.g. "application/foo+json" → "json"), when available.
+     *   4) If $subtypeFallback is true and no match was found:
+     *      - return the MIME subtype (without "x-" prefix), provided it does not
+     *        contain a "+" (e.g. "application/x-yaml" → "yaml", "text/csv" → "csv").
+     *
+     * @param string|null $mimeType        The mime type to check
+     * @param bool        $subtypeFallback Whether to fall back to the subtype if no exact match is found
      */
-    public function getFormat(?string $mimeType): ?string
+    public function getFormat(?string $mimeType/* , bool $subtypeFallback = false */): ?string
     {
+        $subtypeFallback = 2 <= \func_num_args() ? func_get_arg(1) : false;
         $canonicalMimeType = null;
         if ($mimeType && false !== $pos = strpos($mimeType, ';')) {
             $canonicalMimeType = trim(substr($mimeType, 0, $pos));
@@ -1242,6 +1283,27 @@ class Request
             }
             if (null !== $canonicalMimeType && \in_array($canonicalMimeType, (array) $mimeTypes, true)) {
                 return $format;
+            }
+        }
+
+        if (!$canonicalMimeType ??= $mimeType) {
+            return null;
+        }
+
+        if (str_starts_with($canonicalMimeType, 'application/') && str_contains($canonicalMimeType, '+')) {
+            $suffix = substr(strrchr($canonicalMimeType, '+'), 1);
+            if (isset(self::STRUCTURED_SUFFIX_FORMATS[$suffix])) {
+                return self::STRUCTURED_SUFFIX_FORMATS[$suffix];
+            }
+        }
+
+        if ($subtypeFallback && str_contains($canonicalMimeType, '/')) {
+            [, $subtype] = explode('/', $canonicalMimeType, 2);
+            if (str_starts_with($subtype, 'x-')) {
+                $subtype = substr($subtype, 2);
+            }
+            if (!str_contains($subtype, '+')) {
+                return $subtype;
             }
         }
 
@@ -1351,7 +1413,7 @@ class Request
      */
     public function isMethodSafe(): bool
     {
-        return \in_array($this->getMethod(), ['GET', 'HEAD', 'OPTIONS', 'TRACE']);
+        return \in_array($this->getMethod(), ['GET', 'HEAD', 'OPTIONS', 'TRACE', 'QUERY'], true);
     }
 
     /**
@@ -1359,7 +1421,7 @@ class Request
      */
     public function isMethodIdempotent(): bool
     {
-        return \in_array($this->getMethod(), ['HEAD', 'GET', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'PURGE']);
+        return \in_array($this->getMethod(), ['HEAD', 'GET', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'PURGE', 'QUERY'], true);
     }
 
     /**
@@ -1369,7 +1431,7 @@ class Request
      */
     public function isMethodCacheable(): bool
     {
-        return \in_array($this->getMethod(), ['GET', 'HEAD']);
+        return \in_array($this->getMethod(), ['GET', 'HEAD', 'QUERY'], true);
     }
 
     /**
@@ -1917,6 +1979,14 @@ class Request
             'atom' => ['application/atom+xml'],
             'rss' => ['application/rss+xml'],
             'form' => ['application/x-www-form-urlencoded', 'multipart/form-data'],
+            'soap' => ['application/soap+xml'],
+            'problem' => ['application/problem+json'],
+            'hal' => ['application/hal+json', 'application/hal+xml'],
+            'jsonapi' => ['application/vnd.api+json'],
+            'yaml' => ['text/yaml', 'application/x-yaml'],
+            'wbxml' => ['application/vnd.wap.wbxml'],
+            'pdf' => ['application/pdf'],
+            'csv' => ['text/csv'],
         ];
     }
 

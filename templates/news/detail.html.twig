@@ -21,6 +21,14 @@
 				<div class="card">
 					<div class="card-body" data-controller="order">
                         {{entity.instance.content |raw}}
+							{% if entity.instance.filename is not null %}
+								<a href="{{ vich_uploader_asset(entity.instance) }}" class="">Download File</a>
+							{% endif %}
+						<div class="mt-3">
+							{% include 'common/avatar.html.twig' with {'user': entity.instance.createdBy} %}
+
+							<small class="text-muted">{{ entity.instance.creationDate|date('Y-m-d') }}</small>
+						</div>
 					</div>
 				</div>
 			</div>

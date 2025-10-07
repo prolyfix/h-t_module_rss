@@ -3,11 +3,17 @@
 namespace Prolyfix\RssBundle\Entity;
 
 use App\Entity\TimeData;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Prolyfix\RssBundle\Repository\NewsRepository;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: NewsRepository::class)]
+#[Vich\Uploadable]
 class News extends TimeData
 {
     #[ORM\Id]
@@ -23,6 +29,57 @@ class News extends TimeData
 
     #[ORM\Column(nullable: true)]
     private ?array $tags = null;
+
+    #[ORM\Column(length: 255,nullable:true)]
+    private ?string $filename = null;
+
+    #[Vich\UploadableField(mapping: 'medias', fileNameProperty: 'filename')]
+    #[Groups(['module_configuration_value:write'])]
+    private ?File $file = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $theuid = null;
+
+     /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
+    public function setFile(?File $file = null): void
+    {
+        $this->file = $file;
+        if (null !== $file) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->theuid = uniqid();
+        }
+
+    }
+
+    public function getFile(): ?File
+    {
+        return $this->file;
+    }
+
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(string $filename): static
+    {
+        $this->filename = $filename;
+
+        return $this;
+    }
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     public function getId(): ?int
     {
@@ -64,4 +121,5 @@ class News extends TimeData
 
         return $this;
     }
+
 }

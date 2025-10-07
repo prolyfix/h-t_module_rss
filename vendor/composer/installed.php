@@ -3,7 +3,7 @@
         'name' => 'prolyfix/h-t_module_rss',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '0f51b86f53843f6cafe185f9668a43f7fd14c5f2',
+        'reference' => '2a466777845623a697a684bad86e03b5b5ae07c2',
         'type' => 'symfony-bundle',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'prolyfix/h-t_module_rss' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '0f51b86f53843f6cafe185f9668a43f7fd14c5f2',
+            'reference' => '2a466777845623a697a684bad86e03b5b5ae07c2',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -73,7 +73,7 @@
         'symfony/asset' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => 'c850daf61a58bb577cb10022f6cc4b90c1aa9d26',
+            'reference' => '0f7bccb9ffa1f373cbd659774d90629b2773464f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/asset',
             'aliases' => array(),
@@ -82,7 +82,7 @@
         'symfony/config' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => '05d1c81ae96316749e717124f91beec2d340b025',
+            'reference' => '1136d478d025cffd347342cb1b3375254ad69d6d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/config',
             'aliases' => array(),
@@ -91,7 +91,7 @@
         'symfony/dependency-injection' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => '986da395452267d936bb2199679e3e4ba031280f',
+            'reference' => '0587fdea12f41402bdf39af26a9fb31b235567e0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/dependency-injection',
             'aliases' => array(),
@@ -111,7 +111,7 @@
         'symfony/error-handler' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => '37cb740158920b74e9dd699938a436cb71aedb57',
+            'reference' => 'b40ab8ba2e572c512f2c415c795c76383e09001c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/error-handler',
             'aliases' => array(),
@@ -120,7 +120,7 @@
         'symfony/event-dispatcher' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => 'b1275294c9e511d5b1a507cb0c314a068d401d83',
+            'reference' => 'c511634ea987e9f96eafe4270a3c5e7cf6f2f747',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/event-dispatcher',
             'aliases' => array(),
@@ -146,7 +146,7 @@
         'symfony/filesystem' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => 'a4244535ea1f85b3d0aae49f1aef49903f876334',
+            'reference' => '633c6fdfb2eac90041c2de30ad1ccff95a671f66',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/filesystem',
             'aliases' => array(),
@@ -155,7 +155,7 @@
         'symfony/finder' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => '4bb12c568bd5a45e2caa4bc4a0a31087ae7a864c',
+            'reference' => 'c1a41e8ecb0f76b9e6d93deaeb5b85718975b12a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/finder',
             'aliases' => array(),
@@ -164,7 +164,7 @@
         'symfony/http-foundation' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => '03378f77ce0acb69c9096a7b9b902e567f3e4fac',
+            'reference' => '6907afdb22878d2975009e256e8424fa22d2ce4d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/http-foundation',
             'aliases' => array(),
@@ -173,7 +173,7 @@
         'symfony/http-kernel' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => 'dd0cdc357cbb2289588b1637aed1d08c78b47f90',
+            'reference' => 'a604df76a29ecfddc685722134366102a1e8840f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/http-kernel',
             'aliases' => array(),
@@ -197,19 +197,10 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'symfony/polyfill-php83' => array(
-            'pretty_version' => '1.x-dev',
-            'version' => '1.9999999.9999999.9999999-dev',
-            'reference' => '17f6f9a6b1735c0f163024d959f700cfbc5155e5',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/polyfill-php83',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'symfony/polyfill-php85' => array(
             'pretty_version' => '1.x-dev',
             'version' => '1.9999999.9999999.9999999-dev',
-            'reference' => 'd4e5fcd4ab3d998ab16c0db48e6cbb9a01993f91',
+            'reference' => '65345afb52bf45a3d996295b3504ace5db1be853',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-php85',
             'aliases' => array(),
@@ -218,7 +209,7 @@
         'symfony/service-contracts' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'f021b05a130d35510bd6b25fe9053c2a8a15d5d4',
+            'reference' => '45112560a3ba2d715666a509a0bc9521d10b6c43',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/service-contracts',
             'aliases' => array(
@@ -235,7 +226,7 @@
         'symfony/stimulus-bundle' => array(
             'pretty_version' => '2.x-dev',
             'version' => '2.9999999.9999999.9999999-dev',
-            'reference' => 'ef937d0a9178af94b5373ce7fe38b1cf984c9175',
+            'reference' => '328774d5af56b0ec56c152165774306e83efd20c',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../symfony/stimulus-bundle',
             'aliases' => array(),
@@ -244,7 +235,7 @@
         'symfony/var-dumper' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => '90ff8345b0e50508d7ef84c5734e0c51d056b4e6',
+            'reference' => '59052532348d426af0fae6f0bbcc5d8ab598db39',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/var-dumper',
             'aliases' => array(),
@@ -253,7 +244,7 @@
         'symfony/var-exporter' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => '2bfba63ff94d914f300181dd06d13da8668be5ca',
+            'reference' => '03a60f169c79a28513a78c967316fbc8bf17816f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/var-exporter',
             'aliases' => array(),
@@ -262,7 +253,7 @@
         'symfony/webpack-encore-bundle' => array(
             'pretty_version' => '2.x-dev',
             'version' => '2.9999999.9999999.9999999-dev',
-            'reference' => '4bdad272b05b5c3cb4ee4d47ad19a236e3898026',
+            'reference' => '5dbd55e8ee45bf0fa1dc70ca07f424938a954df6',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../symfony/webpack-encore-bundle',
             'aliases' => array(),
@@ -271,7 +262,7 @@
         'twig/twig' => array(
             'pretty_version' => '3.x-dev',
             'version' => '3.9999999.9999999.9999999-dev',
-            'reference' => '1680bba4228c5dc3c9427fe82423300da8a9d487',
+            'reference' => '8832f6327cbde1cdf49650e8e2eee2d58e33884c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../twig/twig',
             'aliases' => array(),

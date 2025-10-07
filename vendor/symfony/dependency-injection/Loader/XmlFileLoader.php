@@ -339,31 +339,38 @@ class XmlFileLoader extends FileLoader
         }
 
         foreach ($this->getChildren($service, 'call') as $call) {
-            $definition->addMethodCall($call->getAttribute('method'), $this->getArgumentsAsPhp($call, 'argument', $file), XmlUtils::phpize($call->getAttribute('returns-clone')));
+            $definition->addMethodCall(
+                $call->getAttribute('method'),
+                $this->getArgumentsAsPhp($call, 'argument', $file),
+                XmlUtils::phpize($call->getAttribute('returns-clone')) ?: false
+            );
         }
 
-        $tags = $this->getChildren($service, 'tag');
-
-        foreach ($tags as $tag) {
-            $tagNameComesFromAttribute = $tag->childElementCount || '' === $tag->nodeValue;
-            if ('' === $tagName = $tagNameComesFromAttribute ? $tag->getAttribute('name') : $tag->nodeValue) {
-                throw new InvalidArgumentException(\sprintf('The tag name for service "%s" in "%s" must be a non-empty string.', $service->getAttribute('id'), $file));
-            }
-
-            $parameters = $this->getTagAttributes($tag, \sprintf('The attribute name of tag "%s" for service "%s" in %s must be a non-empty string.', $tagName, $service->getAttribute('id'), $file));
-            foreach ($tag->attributes as $name => $node) {
-                if ($tagNameComesFromAttribute && 'name' === $name) {
-                    continue;
+        foreach (['tag', 'resource-tag'] as $type) {
+            foreach ($this->getChildren($service, $type) as $tag) {
+                $tagNameComesFromAttribute = $tag->childElementCount || '' === $tag->nodeValue;
+                if ('' === $tagName = $tagNameComesFromAttribute ? $tag->getAttribute('name') : $tag->nodeValue) {
+                    throw new InvalidArgumentException(\sprintf('The tag name for service "%s" in "%s" must be a non-empty string.', $service->getAttribute('id'), $file));
                 }
 
-                if (str_contains($name, '-') && !str_contains($name, '_') && !\array_key_exists($normalizedName = str_replace('-', '_', $name), $parameters)) {
-                    $parameters[$normalizedName] = XmlUtils::phpize($node->nodeValue);
-                }
-                // keep not normalized key
-                $parameters[$name] = XmlUtils::phpize($node->nodeValue);
-            }
+                $parameters = $this->getTagAttributes($tag, \sprintf('The attribute name of tag "%s" for service "%s" in %s must be a non-empty string.', $tagName, $service->getAttribute('id'), $file));
+                foreach ($tag->attributes as $name => $node) {
+                    if ($tagNameComesFromAttribute && 'name' === $name) {
+                        continue;
+                    }
 
-            $definition->addTag($tagName, $parameters);
+                    if (str_contains($name, '-') && !str_contains($name, '_') && !\array_key_exists($normalizedName = str_replace('-', '_', $name), $parameters)) {
+                        $parameters[$normalizedName] = XmlUtils::phpize($node->nodeValue);
+                    }
+                    // keep not normalized key
+                    $parameters[$name] = XmlUtils::phpize($node->nodeValue);
+                }
+
+                match ($type) {
+                    'tag' => $definition->addTag($tagName, $parameters),
+                    'resource-tag' => $definition->addResourceTag($tagName, $parameters),
+                };
+            }
         }
 
         $definition->setTags(array_merge_recursive($definition->getTags(), $defaults->getTags()));
@@ -769,16 +776,16 @@ class XmlFileLoader extends FileLoader
         }
 
         $source = <<<EOF
-<?xml version="1.0" encoding="utf-8" ?>
-<xsd:schema xmlns="http://symfony.com/schema"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://symfony.com/schema"
-    elementFormDefault="qualified">
+            <?xml version="1.0" encoding="utf-8" ?>
+            <xsd:schema xmlns="http://symfony.com/schema"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                targetNamespace="http://symfony.com/schema"
+                elementFormDefault="qualified">
 
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
-$imports
-</xsd:schema>
-EOF
+                <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+            $imports
+            </xsd:schema>
+            EOF
         ;
 
         if ($this->shouldEnableEntityLoader()) {
@@ -823,7 +830,7 @@ EOF
     private function validateAlias(\DOMElement $alias, string $file): void
     {
         foreach ($alias->attributes as $name => $node) {
-            if (!\in_array($name, ['alias', 'id', 'public'])) {
+            if (!\in_array($name, ['alias', 'id', 'public'], true)) {
                 throw new InvalidArgumentException(\sprintf('Invalid attribute "%s" defined for alias "%s" in "%s".', $name, $alias->getAttribute('id'), $file));
             }
         }
