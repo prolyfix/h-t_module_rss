@@ -46,6 +46,9 @@ class RssFeedEntry
     #[ORM\Column(nullable: true)]
     private ?array $readByIds = null;
 
+    #[ORM\OneToOne(mappedBy: 'rssFeedEntry', cascade: ['persist', 'remove'])]
+    private ?News $news = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -166,6 +169,28 @@ class RssFeedEntry
     public function setReadByIds(?array $readByIds): static
     {
         $this->readByIds = $readByIds;
+
+        return $this;
+    }
+
+    public function getNews(): ?News
+    {
+        return $this->news;
+    }
+
+    public function setNews(?News $news): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($news === null && $this->news !== null) {
+            $this->news->setRssFeedEntry(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($news !== null && $news->getRssFeedEntry() !== $this) {
+            $news->setRssFeedEntry($this);
+        }
+
+        $this->news = $news;
 
         return $this;
     }

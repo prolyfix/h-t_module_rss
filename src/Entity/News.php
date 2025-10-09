@@ -43,6 +43,9 @@ class News extends TimeData
     #[ORM\Column(nullable: true)]
     private ?array $readBy = null;
 
+    #[ORM\OneToOne(inversedBy: 'news', cascade: ['persist', 'remove'])]
+    private ?RssFeedEntry $rssFeedEntry = null;
+
      /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
@@ -133,6 +136,18 @@ class News extends TimeData
     public function setReadBy(?array $readBy): static
     {
         $this->readBy = $readBy;
+
+        return $this;
+    }
+
+    public function getRssFeedEntry(): ?RssFeedEntry
+    {
+        return $this->rssFeedEntry;
+    }
+
+    public function setRssFeedEntry(?RssFeedEntry $rssFeedEntry): static
+    {
+        $this->rssFeedEntry = $rssFeedEntry;
 
         return $this;
     }

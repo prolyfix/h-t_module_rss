@@ -32,6 +32,7 @@ final class NewsListener
         $feedEntry->setCreatedBy($news->getCreatedBy());
         $feedList->addRssFeedEntry($feedEntry);
         $this->entityManager->persist($feedEntry);
+        $news->setRssFeedEntry($feedEntry);
         $this->entityManager->persist($feedList);
         $this->entityManager->flush();
 
