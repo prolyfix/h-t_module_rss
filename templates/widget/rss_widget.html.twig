@@ -4,8 +4,11 @@
   <ul>
     {% for entry in feedEntries %}
       <li>
-        <a href="{{ entry.link }}" {% if userId not  in entry.readByIds %} class="bg-success-subtle text-success border-success"{% endif %} style="color:inherit">{{ entry.title }} | {{ entry.rssFeedList.name }}
+        <a href="{{ entry.link }}"  style="color:inherit">{{ entry.title }} | {{ entry.rssFeedList.name }}
         </a>
+        {% if userId not  in entry.readByIds %} 
+        <span class="badge text-bg-info">{% trans %} New{% endtrans %} </span>
+        {% endif %}
         {% if entry.createdBy is not null %}
           | <b>{{ entry.createdBy.name }}</b>
         {% endif %}

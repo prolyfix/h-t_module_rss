@@ -6,6 +6,8 @@ use ApiPlatform\Hydra\Collection;
 use App\Controller\Admin\BaseCrudController;
 use App\Field\TagJsonField;
 use App\Form\MediaType;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use Prolyfix\RssBundle\Entity\News;
@@ -46,7 +48,7 @@ class NewsCrudController extends BaseCrudController
         return $crud
             ->overrideTemplates([
                 'crud/detail' => '@ProlyfixRss/news/detail.html.twig',
-                'crud/index' => '@ProlyfixRss/news/index.html.twig',
+                //'crud/index' => '@ProlyfixRss/news/index.html.twig',
             ]);
     }
 
@@ -54,5 +56,17 @@ class NewsCrudController extends BaseCrudController
     {
         return $filters
             ->add('title');
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $actions = parent::configureActions($actions);
+        $actions->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
+            return $action->setIcon('fa fa-plus')
+                ->setLabel('New')
+                ->setHtmlAttributes(['class' => 'btn btn-primary','data-action' => ''])
+            ;
+        });
+        return $actions;
     }
 }
