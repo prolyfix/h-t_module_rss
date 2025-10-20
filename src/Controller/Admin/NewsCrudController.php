@@ -49,7 +49,8 @@ class NewsCrudController extends BaseCrudController
             ->overrideTemplates([
                 'crud/detail' => '@ProlyfixRss/news/detail.html.twig',
                 //'crud/index' => '@ProlyfixRss/news/index.html.twig',
-            ]);
+            ])
+            ->setDefaultSort(['creationDate' => 'DESC']);
     }
 
     public function configureFilters(Filters $filters): Filters
