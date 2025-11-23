@@ -36,4 +36,6 @@
 		<!-- end row -->
 
 	</div>
+				{% include 'section/comment/comments.html.twig' with {'comments': entity.instance.comments} %}
+
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace Prolyfix\RssBundle\Entity;
 
+use App\Entity\Commentable;
 use App\Entity\TimeData;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,16 +11,13 @@ use Doctrine\DBAL\Types\Types;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
+use Dom\Comment;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: NewsRepository::class)]
 #[Vich\Uploadable]
-class News extends TimeData
+class News extends Commentable
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
@@ -27,8 +25,6 @@ class News extends TimeData
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?array $tags = null;
 
     #[ORM\Column(length: 255,nullable:true)]
     private ?string $filename = null;
@@ -87,10 +83,6 @@ class News extends TimeData
         parent::__construct();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getTitle(): ?string
     {
@@ -116,17 +108,6 @@ class News extends TimeData
         return $this;
     }
 
-    public function getTags(): ?array
-    {
-        return $this->tags;
-    }
-
-    public function setTags(?array $tags): static
-    {
-        $this->tags = $tags;
-
-        return $this;
-    }
 
     public function getReadBy(): ?array
     {
