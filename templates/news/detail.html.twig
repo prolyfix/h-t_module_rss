@@ -29,6 +29,12 @@
 
 							<small class="text-muted">{{ entity.instance.creationDate|date('Y-m-d') }}</small>
 						</div>
+						<div class="mt-3">
+							Gelesen von:
+							{% for userId in entity.instance.rssFeedEntry.readByIds %}
+								{{ generateAvatar(userId) | raw}}
+							{% endfor %}
+						</div>						
 					</div>
 				</div>
 			</div>
@@ -37,6 +43,6 @@
 
 	</div>
 	<input type="hidden" id="comment_class_name" value="news">
-				{% include 'section/comment/comments.html.twig' with {'comments': entity.instance.comments} %}
+	{% include 'section/comment/comments.html.twig' with {'comments': entity.instance.comments} %}
 
 {% endblock %}
