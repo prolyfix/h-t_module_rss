@@ -1,0 +1,38 @@
+# Configuration for AI-powered News Processing
+
+parameters:
+    # AI Provider: 'openai' or 'anthropic'
+    news_ai.provider: '%env(default::NEWS_AI_PROVIDER)%'
+    
+    # AI API Key
+    news_ai.api_key: '%env(default::NEWS_AI_API_KEY)%'
+    
+    # AI Model
+    # OpenAI: 'gpt-4', 'gpt-4-turbo', 'gpt-3.5-turbo'
+    # Anthropic: 'claude-3-5-sonnet-20241022', 'claude-3-opus-20240229'
+    news_ai.model: '%env(default:news_ai_model_default:NEWS_AI_MODEL)%'
+    news_ai_model_default: 'gpt-4'
+
+env(NEWS_AI_PROVIDER): 'openai'
+env(NEWS_AI_API_KEY): 'fafafdsa'
+env(NEWS_AI_MODEL): 'fadsfsdaf'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # AI Analyzer Service
+    Prolyfix\RssBundle\Service\NewsAiAnalyzer:
+        arguments:
+            $aiProvider: '%news_ai.provider%'
+            $aiApiKey: 'fdsmklgfmdkl'
+            $aiModel: '%news_ai.model%'
+
+    # Knowledge Base Processor
+    Prolyfix\RssBundle\Service\NewsKnowledgeBaseProcessor:
+        public: true
+
+    # Repository
+    Prolyfix\RssBundle\Repository\NewsAiSuggestionRepository:
+        tags: ['doctrine.repository_service']

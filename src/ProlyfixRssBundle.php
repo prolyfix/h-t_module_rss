@@ -87,7 +87,7 @@ class ProlyfixRssBundle extends ModuleBundle
             MenuItem::linkToCrud('Rss Feed List', 'fas fa-list', RssFeedList::class),
         ],
             'feed' => [
-                MenuItem::section('Feed', 'fas fa-rss'),
+                MenuItem::section('Feed', 'fas fa-bullhorn'),
                 MenuItem::linkToCrud('News', 'fas fa-list', News::class),
             ],
         ];
