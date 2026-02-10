@@ -203,7 +203,7 @@
       ]
     },
     "serviceShortSyntax": {
-      "$comment": "Short syntax: service defined as arguments array. YAML example: App\\SomeService: ['@dependency', 'literal', 123]",
+      "$comment": "Short syntax: service defined as arguments array. YAML example: Prolyfix\HolidayAndTime\SomeService: ['@dependency', 'literal', 123]",
       "type": "array",
       "items": { "$ref": "#/$defs/parameterValue" }
     },

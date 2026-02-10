@@ -1,7 +1,7 @@
 <?php 
 namespace Prolyfix\RssBundle\Widget;
 
-use App\Widget\WidgetInterface;
+use Prolyfix\HolidayAndTime\Widget\WidgetInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Prolyfix\RssBundle\Entity\RssFeedEntry;

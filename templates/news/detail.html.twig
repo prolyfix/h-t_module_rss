@@ -22,10 +22,10 @@
 					<div class="card-body" data-controller="order">
                         {{entity.instance.content |raw}}
 							{% if entity.instance.filename is not null %}
-								<a href="{{ ea_url() .setController('App\\Controller\\Admin\\MediaCrudController') .setAction('servePrivateFileByName') .set('fileName', entity.instance.filename) }}" class="">Download File</a>
+								<a href="{{ ea_url() .setController('Prolyfix\HolidayAndTime\Controller\\Admin\\MediaCrudController') .setAction('servePrivateFileByName') .set('fileName', entity.instance.filename) }}" class="">Download File</a>
 							{% endif %}
 						<div class="mt-3">
-							{% include 'common/avatar.html.twig' with {'user': entity.instance.createdBy} %}
+							{% include '@ProlyfixHolidayAndTime/common/avatar.html.twig' with {'user': entity.instance.createdBy} %}
 
 							<small class="text-muted">{{ entity.instance.creationDate|date('Y-m-d') }}</small>
 						</div>

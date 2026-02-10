@@ -3,9 +3,9 @@
 namespace Prolyfix\RssBundle\Controller\Admin;
 
 use ApiPlatform\Hydra\Collection;
-use App\Controller\Admin\BaseCrudController;
-use App\Field\TagJsonField;
-use App\Form\MediaType;
+use Prolyfix\HolidayAndTime\Controller\Admin\BaseCrudController;
+use Prolyfix\HolidayAndTimeField\TagJsonField;
+use Prolyfix\HolidayAndTimeForm\MediaType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;

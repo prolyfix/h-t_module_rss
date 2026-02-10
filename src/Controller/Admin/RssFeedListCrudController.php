@@ -2,7 +2,7 @@
 
 namespace Prolyfix\RssBundle\Controller\Admin;
 
-use App\Controller\Admin\BaseCrudController;
+use Prolyfix\HolidayAndTime\Controller\Admin\BaseCrudController;
 use Prolyfix\RssBundle\Entity\RssFeedList;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;

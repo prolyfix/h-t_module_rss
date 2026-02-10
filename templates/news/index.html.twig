@@ -5,7 +5,7 @@
 			<div class="col-md-4">
 				<div class="card">
 					<div class="card-body">
-						{% include 'common/_cardActions.html.twig' with {
+						{% include '@ProlyfixHolidayAndTime/common/_cardActions.html.twig' with {
                     'actions': [
                         {'action': ea_url()
                             .setController('Prolyfix\\RssBundle\\Controller\\Admin\\NewsCrudController')
@@ -25,7 +25,7 @@
 						</p>
 					</div>
                     <div class="card-footer text-center">
-					{% include 'common/avatar.html.twig' with {'user': entity.instance.createdBy} %}
+					{% include '@ProlyfixHolidayAndTime/common/avatar.html.twig' with {'user': entity.instance.createdBy} %}
                         <small class="text-muted">{{ entity.instance.creationDate|date('Y-m-d') }}</small>
                     </div>
 				</div>

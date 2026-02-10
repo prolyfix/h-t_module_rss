@@ -2,7 +2,7 @@
 
 namespace Prolyfix\RssBundle\Entity;
 
-use App\Entity\User;
+use Prolyfix\HolidayAndTime\Entity\User;
 use Prolyfix\RssBundle\Repository\RssFeedEntryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

@@ -2,8 +2,8 @@
 
 namespace Prolyfix\RssBundle\Entity;
 
-use App\Entity\Commentable;
-use App\Entity\TimeData;
+use Prolyfix\HolidayAndTime\Entity\Commentable;
+use Prolyfix\HolidayAndTime\Entity\TimeData;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Prolyfix\RssBundle\Repository\NewsRepository;

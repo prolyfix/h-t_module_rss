@@ -107,7 +107,7 @@ class ServiceLocator implements ServiceCollectionInterface
         if (!$this->container) {
             $class = null;
         } elseif ($this->container->has($id) || isset($this->container->getRemovedIds()[$id])) {
-            $msg[] = 'even though it exists in the app\'s container,';
+            $msg[] = 'even though it exists in the Prolyfix\HolidayAndTime's container,';
         } else {
             try {
                 $this->container->get($id);

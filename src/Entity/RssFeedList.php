@@ -2,7 +2,7 @@
 
 namespace Prolyfix\RssBundle\Entity;
 
-use App\Entity\TimeData;
+use Prolyfix\HolidayAndTime\Entity\TimeData;
 use Prolyfix\RssBundle\Repository\RssFeedListRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

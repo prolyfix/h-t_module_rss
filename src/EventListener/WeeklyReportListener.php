@@ -1,7 +1,7 @@
 <?php
 namespace Prolyfix\RssBundle\EventListener;
 
-use App\Event\ModifiableArrayEvent;
+use Prolyfix\HolidayAndTime\Event\ModifiableArrayEvent;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Prolyfix\RssBundle\Entity\RssFeedEntry;

@@ -181,7 +181,7 @@ different ways:
 #. By listening to the ``Symfony\WebpackEncoreBundle\Event\RenderAssetTagEvent``
    event. For example::
 
-    namespace App\EventSubscriber;
+    namespace Prolyfix\HolidayAndTime\EventSubscriber;
 
     use Symfony\Component\EventDispatcher\EventSubscriberInterface;
     use Symfony\WebpackEncoreBundle\Event\RenderAssetTagEvent;
