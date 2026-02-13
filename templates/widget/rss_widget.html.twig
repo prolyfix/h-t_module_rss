@@ -6,6 +6,9 @@
       <li>
         <a href="{{ entry.link }}"  style="color:inherit">{{ entry.title }} | {{ entry.rssFeedList.name }}
         </a>
+        {% if entry.news.comments | length > 0 %}
+          <span class="badge badge-primary">{{ entry.news.comments | length }}</span>
+        {% endif %}
         {% if userId not  in entry.readByIds %} 
         <span class="badge text-bg-info">{% trans %} New{% endtrans %} </span>
         {% endif %}
