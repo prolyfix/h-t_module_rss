@@ -6,12 +6,13 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="page-title-box">
-					<h4 class="page-title">{{entity.instance.title}}</h4>
-                    {# Todo: intégrer les boutons d'easy admin.#}
-					<div class="page-title-right">
+					<h4 class="page-title">{{entity.instance.title}}
+						<span data-action="click->global#addToFavorites" data-entity-id="{{ entity.instance.id }}" data-entity-class="Prolyfix\RssBundle\Entity\News">
+							<i class="fa fa-heart"></i>
+						</span>
+					</h4>
+					{# Todo: intégrer les boutons d'easy admin.#}
 
-
-					</div>
 				</div>
 			</div>
 		</div>
@@ -20,21 +21,37 @@
 			<div class="col-lg-12">
 				<div class="card">
 					<div class="card-body" data-controller="order">
-                        {{entity.instance.content |raw}}
-							{% if entity.instance.filename is not null %}
-								<a href="{{ ea_url() .setController('Prolyfix\HolidayAndTime\Controller\\Admin\\MediaCrudController') .setAction('servePrivateFileByName') .set('fileName', entity.instance.filename) }}" class="">Download File</a>
-							{% endif %}
+						{{entity.instance.content |raw}}
+						{% if entity.instance.filename is not null %}
+							<a href="{{ ea_url() .setController('Prolyfix\HolidayAndTime\Controller\\Admin\\MediaCrudController') .setAction('servePrivateFileByName') .set('fileName', entity.instance.filename) }}" class="">Download File</a>
+						{% endif %}
 						<div class="mt-3">
 							{% include '@ProlyfixHolidayAndTime/common/avatar.html.twig' with {'user': entity.instance.createdBy} %}
-
 							<small class="text-muted">{{ entity.instance.creationDate|date('Y-m-d') }}</small>
 						</div>
 						<div class="mt-3">
-							Gelesen von:
-							{% for userId in entity.instance.rssFeedEntry.readByIds %}
-								{{ generateAvatar(userId) | raw}}
+							{% set somme = 0 %}
+							{% for readen in entity.instance.readsStats %}
+								{% set somme = somme + readen %}
 							{% endfor %}
-						</div>						
+							{{somme}}/{{entity.instance.readsStats | length}} <br>
+							Gelesen von:
+							{% for userId, readen in entity.instance.readsStats %}
+								{% if readen == 1 %}
+									{{ generateAvatar(userId) | raw}}
+								{% endif %}
+							{% endfor %}
+							 <br/>
+							{% if is_granted('ROLE_ADMIN') %}
+								nicht gelesen von:
+								{% for userId, readen in entity.instance.readsStats %}
+									{% if readen == 0 %}
+										{{ generateAvatar(userId) | raw}}
+									{% endif %}
+								{% endfor %}
+							{% endif %}
+
+						</div>
 					</div>
 				</div>
 			</div>
