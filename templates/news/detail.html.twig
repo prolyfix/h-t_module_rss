@@ -30,27 +30,7 @@
 							<small class="text-muted">{{ entity.instance.creationDate|date('Y-m-d') }}</small>
 						</div>
 						<div class="mt-3">
-							{% set somme = 0 %}
-							{% for readen in entity.instance.readsStats %}
-								{% set somme = somme + readen %}
-							{% endfor %}
-							{{somme}}/{{entity.instance.readsStats | length}} <br>
-							Gelesen von:
-							{% for userId, readen in entity.instance.readsStats %}
-								{% if readen == 1 %}
-									{{ generateAvatar(userId) | raw}}
-								{% endif %}
-							{% endfor %}
-							 <br/>
-							{% if is_granted('ROLE_ADMIN') %}
-								nicht gelesen von:
-								{% for userId, readen in entity.instance.readsStats %}
-									{% if readen == 0 %}
-										{{ generateAvatar(userId) | raw}}
-									{% endif %}
-								{% endfor %}
-							{% endif %}
-
+							{% include '@ProlyfixHolidayAndTime/common/reads_stats.html.twig' with {'readsStats': entity.instance.readsStats|default([])} %}
 						</div>
 					</div>
 				</div>

@@ -1,22 +1,39 @@
 {% extends '@ProlyfixHolidayAndTime/widget/_skeleton.html.twig' %}
 {% block content %}
-  {% set userId = app.user.id %}
-  <ul>
-    {% for entry in feedEntries %}
-      <li>
-        <a href="{{ entry.link }}"  style="color:inherit">{{ entry.title }} | {{ entry.rssFeedList.name }}
-        </a>
-        {% if entry.news.comments | length > 0 %}
-          <span class="badge badge-primary">{{ entry.news.comments | length }}</span>
-        {% endif %}
-        {% if userId not  in entry.readByIds %} 
-        <span class="badge text-bg-info">{% trans %} New{% endtrans %} </span>
-        {% endif %}
-        {% if entry.createdBy is not null %}
-          | <b>{{ entry.createdBy.name }}</b>
-        {% endif %}
-      </li>
-    {% endfor %}
-  </ul>
-  <a href="{{ path('admin', { crudAction: 'index', crudControllerFqcn: 'Prolyfix\\RssBundle\\Controller\\Admin\\NewsCrudController' }) }}" class="btn btn-primary">{{ 'Alle'|trans }}</a>
+	{% set userId = app.user.id %}
+	<ul>
+		{% for entry in feedEntries %}
+			<li>
+				{% if entry.news is not null %}
+					<a href="{{ entry.link }}" style="color:inherit">{{ entry.news.title }}
+						{% include '@ProlyfixHolidayAndTime/common/news_type_badge.html.twig' with {'news': entry.news} %}
+						|
+						{{ entry.rssFeedList.name }}
+					</a>
+				{% else %}
+					<a href="{{ entry.link }}" style="color:inherit">{{ entry.title }}
+						|
+						{{ entry.rssFeedList.name }}
+					</a>
+
+				{% endif %}
+				{% if entry.news is not null %}
+					{% if entry.news.comments | length > 0 %}
+						<span class=" badge badge-primary">{{ entry.news.comments | length }}
+						</span>
+					{% endif %}
+				{% endif %}
+				{% if userId not  in entry.readByIds %}
+					<span class="badge text-bg-info">{% trans %}
+						New{% endtrans %}
+					</span>
+				{% endif %}
+				{% if entry.createdBy is not null %}
+					|
+					<b>{{ entry.createdBy.name }}</b>
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+	<a href="{{ path('admin', { crudAction: 'index', crudControllerFqcn: 'Prolyfix\\RssBundle\\Controller\\Admin\\NewsCrudController' }) }}" class="btn btn-primary">{{ 'Alle'|trans }}</a>
 {% endblock %}

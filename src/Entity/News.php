@@ -2,10 +2,12 @@
 
 namespace Prolyfix\RssBundle\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Prolyfix\HolidayAndTime\Entity\Commentable;
 use Prolyfix\HolidayAndTime\Entity\TimeData;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Prolyfix\HolidayAndTime\Entity\WorkingGroup;
 use Prolyfix\RssBundle\Repository\NewsRepository;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\HttpFoundation\File\File;
@@ -16,13 +18,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: NewsRepository::class)]
 #[Vich\Uploadable]
+#[ApiResource(
+    normalizationContext: ['groups' => ['module_configuration_value:read']],
+    denormalizationContext: ['groups' => ['module_configuration_value:write']],
+)]
 class News extends Commentable
 {
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
 
+    #[ORM\Column(length: 2048, nullable: true)]
+    private ?string $link = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['module_configuration_value:read'])]
     private ?string $content = null;
 
 
@@ -39,11 +49,20 @@ class News extends Commentable
     #[ORM\Column(nullable: true)]
     private ?array $readBy = null;
 
-    #[ORM\OneToOne(inversedBy: 'news', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'news', cascade: ['persist','remove'],)]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?RssFeedEntry $rssFeedEntry = null;
 
     #[ORM\Column(nullable: true)]
     private ?array $readsStats = null;
+
+    private ?string $custom = null;
+
+    private ?string $custom2 = null;
+
+    #[ORM\ManyToOne]
+    private ?WorkingGroup $workingGroup = null;
+
 
      /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -99,6 +118,18 @@ class News extends Commentable
         return $this;
     }
 
+    public function getLink(): ?string
+    {
+        return $this->link;
+    }
+
+    public function setLink(?string $link): static
+    {
+        $this->link = $link;
+
+        return $this;
+    }
+
     public function getContent(): ?string
     {
         return $this->content;
@@ -147,5 +178,44 @@ class News extends Commentable
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->title??'New News';
+    }
+
+    public function getCustom(): ?string
+    {
+        return "balbl";
+    }   
+
+    public function getCustom2(): ?string
+    {
+        return "blabla";
+    }
+
+    public function getWorkingGroup(): ?WorkingGroup
+    {
+        return $this->workingGroup;
+    }
+
+    public function setWorkingGroup(?WorkingGroup $workingGroup): static
+    {
+        $this->workingGroup = $workingGroup;
+
+        return $this;
+    }
+
+    public function getTypeKey(): string
+    {
+        $link = $this->getLink() ?? '';
+
+        if (str_contains($link, 'Prolyfix%5CKnowledgebaseBundle%5CController%5CAdmin%5CKnowledgebaseCrudController')) {
+            return 'news.type.knowledgebase';
+        }
+
+        return 'news.type.generic';
+    }
+
 
 }

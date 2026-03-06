@@ -46,7 +46,7 @@ class RssFeedEntry
     #[ORM\Column(nullable: true)]
     private ?array $readByIds = null;
 
-    #[ORM\OneToOne(mappedBy: 'rssFeedEntry', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'rssFeedEntry', cascade: ['persist'])]
     private ?News $news = null;
 
     public function getId(): ?int
