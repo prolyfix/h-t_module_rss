@@ -134,13 +134,13 @@ class NewsCrudController extends BaseCrudController
             return $queryBuilder->andWhere('1 = 0');
         }
 
-        $workgroup = $user->getWorkingGroup();
-        if ($workgroup === null) {
-            return $queryBuilder->andWhere('entity.workgroup IS NULL');
+        $workingGroup = $user->getWorkingGroup();
+        if ($workingGroup === null) {
+            return $queryBuilder->andWhere('entity.workingGroup IS NULL');
         }
 
         return $queryBuilder
-            ->andWhere('entity.workgroup = :current_workgroup')
-            ->setParameter('current_workgroup', $workgroup);
+            ->andWhere('entity.workingGroup = :current_workingGroup OR entity.workingGroup IS NULL')
+            ->setParameter('current_workingGroup', $workingGroup);
     }
 }
