@@ -140,7 +140,7 @@ class NewsCrudController extends BaseCrudController
         }
 
         return $queryBuilder
-            ->andWhere('entity.workingGroup = :current_workingGroup')
+            ->andWhere('entity.workingGroup = :current_workingGroup OR entity.workingGroup IS NULL')
             ->setParameter('current_workingGroup', $workingGroup);
     }
 }
